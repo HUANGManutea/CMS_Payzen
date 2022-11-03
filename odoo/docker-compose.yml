@@ -18,7 +18,7 @@ services:
     ports:
       - "8069:8069"
     volumes:
-      - ./odoo-web-data:/var/lib/odoo
+      - odoo-web-data:/var/lib/odoo
       - ./config:/etc/odoo
       - ./addons:/mnt/extra-addons
       - ./first-start.sh:/first-start.sh
@@ -30,4 +30,5 @@ services:
     command: bash /first-start.sh
 
 volumes:
+  odoo-web-data:
   odoo_db_data:
