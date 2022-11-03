@@ -9,6 +9,8 @@ Ce projet contient le setup initial pour:
 # Setup
 
 - Récupérez ce dossier
+- renommer/copier exemple.env en .env
+- remplacer les valeurs de .env
 - lancez la commande suivante:
 
 ```bash
