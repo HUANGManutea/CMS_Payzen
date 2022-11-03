@@ -1,0 +1,33 @@
+version: '3'
+services:
+  odoo-db:
+    container_name: odoo-db
+    image: postgres:13
+    volumes:
+      - odoo_db_data:/var/lib/postgresql/data/pgdata
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+  odoo:
+    container_name: odoo
+    image: odoo:15.0
+    depends_on:
+      - odoo-db
+    ports:
+      - "8069:8069"
+    volumes:
+      - ./odoo-web-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+      - ./first-start.sh:/first-start.sh
+    environment:
+      - HOST=odoo-db
+      - USER=${DB_USER}
+      - PASSWORD=${DB_PASSWORD}
+      - PORT=${DB_PORT}
+    command: bash /first-start.sh
+
+volumes:
+  odoo_db_data:

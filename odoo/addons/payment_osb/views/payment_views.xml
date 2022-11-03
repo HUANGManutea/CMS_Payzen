@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+# Copyright © Lyra Network.
+# This file is part of OSB plugin for Odoo. See COPYING.md for license details.
+#
+# Author:    Lyra Network (https://www.lyra.com)
+# Copyright: Copyright © Lyra Network
+# License:   http://www.gnu.org/licenses/agpl.html GNU Affero General Public License (AGPL v3)
+-->
+
+<odoo>
+    <data>
+        <record id="acquirer_form_osb" model="ir.ui.view">
+            <field name="name">acquirer.form.osb</field>
+            <field name="model">payment.acquirer</field>
+            <field name="inherit_id" ref="payment.payment_acquirer_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='acquirer']" position="after">
+                    <div attrs="{'invisible': [('provider','not in',('osb','osbmulti'))]}">
+                        <group name="osb_gateway_access" string="PAYMENT GATEWAY ACCESS">
+                            <field name="osb_site_id" autocomplete="off" attrs="{'required': [('provider','in',('osb','osbmulti'))]}" />
+                            <field name="osb_key_test" autocomplete="off" attrs="{'required': [('provider','in',('osb','osbmulti'))]}" />
+                            <field name="osb_key_prod" autocomplete="off" attrs="{'required': [('provider','in',('osb','osbmulti'))]}" />
+                            <field name="osb_sign_algo" attrs="{'required': [('provider','in',('osb','osbmulti'))]}" />
+                            <field name="osb_notify_url" />
+                            <field name="osb_gateway_url" attrs="{'required': [('provider','in',('osb','osbmulti'))]}" />
+                        </group>
+                        <group string="PAYMENT PAGE">
+                            <field name="osb_language" attrs="{'required': [('provider','in',('osb','osbmulti'))]}" />
+                            <field name="osb_available_languages" widget="many2many_tags" options="{'no_create': True}" />
+                            <field name="osb_capture_delay" />
+                            <field name="osb_validation_mode" attrs="{'required': [('provider','in',('osb','osbmulti'))]}" />
+                            <field name="osb_payment_cards" widget="many2many_tags" options="{'no_create': True}" />
+                        </group>
+                        <group name="osb_selective_3ds" string="CUSTOM 3DS">
+                            <field name="osb_threeds_min_amount" />
+                        </group>
+                        <group string="RETURN TO SHOP">
+                            <field name="osb_redirect_enabled" attrs="{'required': [('provider','in',('osb','osbmulti'))]}" />
+                            <field name="osb_redirect_success_timeout" />
+                            <field name="osb_redirect_success_message" />
+                            <field name="osb_redirect_error_timeout" />
+                            <field name="osb_redirect_error_message" />
+                            <field name="osb_return_mode" attrs="{'required': [('provider','in',('osb','osbmulti'))]}" />
+                        </group>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="transaction_form_osb" model="ir.ui.view">
+            <field name="name">acquirer.transaction.form.osb</field>
+            <field name="model">payment.transaction</field>
+            <field name="inherit_id" ref="payment.payment_transaction_form" />
+            <field name="arch" type="xml">
+                <field name="acquirer_reference" position="after">
+                    <field name="osb_trans_status" attrs="{'invisible': [('provider','not in',('osb','osbmulti'))]}" />
+                    <field name="osb_card_brand" attrs="{'invisible': [('provider','not in',('osb','osbmulti'))]}" />
+                    <field name="osb_card_number" attrs="{'invisible': [('provider','not in',('osb','osbmulti'))]}" />
+                    <field name="osb_expiration_date" attrs="{'invisible': [('provider','not in',('osb','osbmulti'))]}" />
+                    <field name="osb_auth_result" attrs="{'invisible': [('provider','not in',('osb','osbmulti'))]}" />
+                </field>
+
+                <xpath expr="//form/sheet/group[last()]" position="after">
+                    <group string="Transaction log" attrs="{'invisible': [('provider','not in',('osb','osbmulti'))]}">
+                        <field name="osb_raw_data" nolabel="1" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+
+    <function model="payment.acquirer" name="multi_add">
+        <value>/views/payment_views_multi.xml</value>
+    </function>
+</odoo>
