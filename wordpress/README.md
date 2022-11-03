@@ -3,7 +3,7 @@
 Ce projet contient le setup initial pour:
 - un serveur Wordpress
 - la base de données mariaDB associée
-- le module Woocommerce
+- le module Woocommerce 6.9
 - le module OSB Payzen
 
 # Setup
